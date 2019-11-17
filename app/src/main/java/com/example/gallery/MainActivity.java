@@ -1,35 +1,41 @@
 package com.example.gallery;
 
+import android.Manifest;
+import android.annotation.TargetApi;
+import android.app.ActivityManager;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.Manifest;
-import android.annotation.TargetApi;
-import android.app.ActivityManager;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.media.Image;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.ListView;
-
 import com.bumptech.glide.Glide;
+import org.apache.commons.io.comparator.LastModifiedFileComparator;
+import org.apache.commons.io.filefilter.FileFileFilter;
+
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import jp.wasabeef.blurry.Blurry;
 import rm.com.longpresspopup.LongPressPopup;
 import rm.com.longpresspopup.LongPressPopupBuilder;
 import rm.com.longpresspopup.PopupInflaterListener;
@@ -39,11 +45,14 @@ import rm.com.longpresspopup.PopupStateListener;
 public class MainActivity extends AppCompatActivity implements PopupInflaterListener,
         PopupStateListener, PopupOnHoverListener
 {
-
+    ViewGroup viewGroup;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        View decorView = getWindow().getDecorView();
+        //ViewGroup you want to start blur from. Choose root as close to BlurView in hierarchy as possible.
+         viewGroup = (ViewGroup) decorView.findViewById(android.R.id.content);
     }
     private static final int req_permissions=123;
     private static final String[] permission={
@@ -84,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements PopupInflaterList
     GridView gridView;
     GalleryAdapter galleryAdapter=new GalleryAdapter(MainActivity.this);
     LongPressPopup popup;
+    List<String> image_list=galleryAdapter.get_image_list();
     int pos;
     @Override
     protected void onResume() {
@@ -132,6 +142,7 @@ public class MainActivity extends AppCompatActivity implements PopupInflaterList
             {
                 File imageDir = new File(directories[i]);
                 File[] imageList = imageDir.listFiles();
+                Arrays.sort(imageList, LastModifiedFileComparator.LASTMODIFIED_REVERSE);
                 if(imageList == null)
                     continue;
                 for (File imagePath : imageList) {
@@ -140,6 +151,9 @@ public class MainActivity extends AppCompatActivity implements PopupInflaterList
                         if(imagePath.isDirectory())
                         {
                             imageList = imagePath.listFiles();
+
+
+
 
                         }
                         if ( imagePath.getName().contains(".jpg")|| imagePath.getName().contains(".JPG")
@@ -180,6 +194,8 @@ public class MainActivity extends AppCompatActivity implements PopupInflaterList
                     .setTag("PopupFoo")
                     .setAnimationType(LongPressPopup.ANIMATION_TYPE_FROM_CENTER)
                     .setDismissOnBackPressed(true)
+                    .setDismissOnLongPressStop(true)
+                    .setDismissOnTouchOutside(true)
                     .build();
             popup.register();
 
@@ -192,6 +208,18 @@ public class MainActivity extends AppCompatActivity implements PopupInflaterList
                     return false;
                 }
             });
+            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                                @Override
+                                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                                                    Intent intent = new Intent();
+                                                    intent.setAction(android.content.Intent.ACTION_VIEW);
+                                                    intent.setDataAndType(Uri.parse(image_list.get(i)), "image/*");
+                                                    startActivity(intent);
+                                                }
+                                            }
+
+            );
             isGalleryInitialized=true;
         }
 
@@ -200,6 +228,7 @@ public class MainActivity extends AppCompatActivity implements PopupInflaterList
     @Override
     public void onViewInflated(@Nullable String popupTag, View root) {
         popupImg = (ImageView) root.findViewById(R.id.popup_detail_img);
+
     }
 
     @Override
@@ -208,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements PopupInflaterList
     }
 
 
-    List<String> image_list=galleryAdapter.get_image_list();
+
 
     @Override
     public void onPopupShow(@Nullable String popupTag) {
@@ -217,13 +246,13 @@ public class MainActivity extends AppCompatActivity implements PopupInflaterList
         Glide.with(MainActivity.this)
                 .load(image_list.get(pos))
                 .into(popupImg);
-
+        Blurry.with(MainActivity.this).radius(25).sampling(2).onto(viewGroup);
 
     }
 
     @Override
     public void onPopupDismiss(@Nullable String popupTag) {
-
+        Blurry.delete(viewGroup);
     }
 
 

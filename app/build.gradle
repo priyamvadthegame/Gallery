@@ -28,4 +28,6 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.10.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
     compile 'com.rm:longpresspopup:1.0.1'
+    compile "commons-io:commons-io:+"
+    implementation 'jp.wasabeef:blurry:2.1.0'
 }
