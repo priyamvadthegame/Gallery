@@ -18,6 +18,10 @@ import java.util.List;
 public final class GalleryAdapter extends BaseAdapter{
     private List<String> data=new ArrayList<String>();
     private Context mcntext;
+    GalleryAdapter()
+    {
+
+    }
     GalleryAdapter(Context context)
     {
         this.mcntext=context;
@@ -61,7 +65,7 @@ public final class GalleryAdapter extends BaseAdapter{
         Glide.with(mcntext).load(data.get(i)).centerCrop().into(img);
         return img;
     }
-    public List<String> get_image_list()
+    public  List<String> get_image_list()
     {
       return  data;
     }

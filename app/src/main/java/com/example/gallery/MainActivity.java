@@ -6,6 +6,8 @@ import android.app.ActivityManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -44,15 +46,14 @@ import rm.com.longpresspopup.PopupStateListener;
 
 public class MainActivity extends AppCompatActivity implements PopupInflaterListener,
         PopupStateListener, PopupOnHoverListener
-{
+{   public static int SingleClickCount=0;
     ViewGroup viewGroup;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         View decorView = getWindow().getDecorView();
-        //ViewGroup you want to start blur from. Choose root as close to BlurView in hierarchy as possible.
-         viewGroup = (ViewGroup) decorView.findViewById(android.R.id.content);
+        viewGroup = (ViewGroup) decorView.findViewById(android.R.id.content);
     }
     private static final int req_permissions=123;
     private static final String[] permission={
@@ -93,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements PopupInflaterList
     GridView gridView;
     GalleryAdapter galleryAdapter=new GalleryAdapter(MainActivity.this);
     LongPressPopup popup;
+    boolean LongSingleClickFlag=false;
     List<String> image_list=galleryAdapter.get_image_list();
     int pos;
     @Override
@@ -111,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements PopupInflaterList
             String[] projection = {MediaStore.Images.ImageColumns.DATA};
             Cursor c = null;
             SortedSet<String> dirList = new TreeSet<String>();
-            ArrayList<String> resultIAV = new ArrayList<String>();
+            final ArrayList<String> resultIAV = new ArrayList<String>();
             if (u != null)
             {
                 c = managedQuery(u, projection, null, null, null);
@@ -180,6 +182,7 @@ public class MainActivity extends AppCompatActivity implements PopupInflaterList
 
             galleryAdapter.set_data(resultIAV);
             gridView.setAdapter(galleryAdapter);
+            final List<String> image_list1=galleryAdapter.get_image_list();
             popup = new LongPressPopupBuilder(this)
                     .setTarget(gridView)
                     //.setPopupView(textView)// Not using this time
@@ -208,22 +211,39 @@ public class MainActivity extends AppCompatActivity implements PopupInflaterList
                     return false;
                 }
             });
-            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                                @Override
-                                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                                                    Intent intent = new Intent();
-                                                    intent.setAction(android.content.Intent.ACTION_VIEW);
-                                                    intent.setDataAndType(Uri.parse(image_list.get(i)), "image/*");
-                                                    startActivity(intent);
-                                                }
-                                            }
+                gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                                    @Override
 
-            );
+                                                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                                                        SingleClickCount++;
+                                                        if (!LongSingleClickFlag) {
+                                                            if (SingleClickCount <= 1) {
+                                                                Intent intent = new Intent(MainActivity.this, SingleTouchImageView.class);
+                                                                intent.putExtra("key", image_list1.get(i));
+                                                                startActivity(intent);
+                                                            }
+
+
+                                                        }
+
+                                                            
+
+
+
+                                                    }
+
+                                                });
+
+
+
             isGalleryInitialized=true;
         }
 
         }
+
+
 
     @Override
     public void onViewInflated(@Nullable String popupTag, View root) {
@@ -242,7 +262,6 @@ public class MainActivity extends AppCompatActivity implements PopupInflaterList
     @Override
     public void onPopupShow(@Nullable String popupTag) {
 
-
         Glide.with(MainActivity.this)
                 .load(image_list.get(pos))
                 .into(popupImg);
@@ -253,7 +272,9 @@ public class MainActivity extends AppCompatActivity implements PopupInflaterList
     @Override
     public void onPopupDismiss(@Nullable String popupTag) {
         Blurry.delete(viewGroup);
+
     }
+
 
 
 }
