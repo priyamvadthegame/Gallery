@@ -166,8 +166,6 @@ public class MainActivity extends AppCompatActivity implements PopupInflaterList
                         )
                         {
 
-
-
                             String path= imagePath.getAbsolutePath();
                             resultIAV.add(path);
 
@@ -207,7 +205,6 @@ public class MainActivity extends AppCompatActivity implements PopupInflaterList
                 @Override
                 public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                     pos=i;
-
                     return false;
                 }
             });
@@ -218,20 +215,20 @@ public class MainActivity extends AppCompatActivity implements PopupInflaterList
                                                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                                                         SingleClickCount++;
-                                                        if (!LongSingleClickFlag) {
+
                                                             if (SingleClickCount <= 1) {
-                                                                Intent intent = new Intent(MainActivity.this, SingleTouchImageView.class);
-                                                                intent.putExtra("key", image_list1.get(i));
-                                                                startActivity(intent);
+                                                                if(i!=0) {
+                                                                    Intent intent = new Intent(MainActivity.this, SingleTouchImageView.class);
+                                                                    intent.putExtra("key", image_list1.get(i));
+                                                                    startActivity(intent);
+                                                                }
+                                                                else
+                                                                {
+                                                                    Intent intent = new Intent(MainActivity.this, SingleTouchImageView1.class);
+                                                                    intent.putExtra("imagelist",resultIAV);
+                                                                    startActivity(intent);
+                                                                }
                                                             }
-
-
-                                                        }
-
-                                                            
-
-
-
                                                     }
 
                                                 });

@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 
 
@@ -19,26 +20,23 @@ import java.util.List;
 
 import uk.co.senab.photoview.PhotoViewAttacher;
 
-public class SingleTouchImageView extends AppCompatActivity {
-    PhotoViewAttacher mAttacher;
+public class SingleTouchImageView1 extends AppCompatActivity {
+    ViewPager viewPager;
+    ViewPagerAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.singletouchimageview);
-        ImageView img=findViewById(R.id.singletouchimageview);
-        String bundle = getIntent().getExtras().getString("key");
-        Bitmap myBitmap = BitmapFactory.decodeFile(bundle);
-        img.setImageBitmap(myBitmap);
-        mAttacher=new PhotoViewAttacher(img);
-        mAttacher.update();
-
+        setContentView(R.layout.viewpageractivity);
+        viewPager=findViewById(R.id.viewpager);
+        List<String> imagelist = getIntent().getExtras().getStringArrayList("imagelist");
+        String imagelistArray[]=new String[imagelist.size()];
+        imagelist.toArray(imagelistArray);
+        adapter=new ViewPagerAdapter(SingleTouchImageView1.this,imagelistArray,imagelistArray.length);
+        viewPager.setAdapter(adapter);
     }
-
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         MainActivity.SingleClickCount=0;
     }
-
 }

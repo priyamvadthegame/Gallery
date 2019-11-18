@@ -30,4 +30,5 @@ dependencies {
     compile 'com.rm:longpresspopup:1.0.1'
     compile "commons-io:commons-io:+"
     implementation 'jp.wasabeef:blurry:2.1.0'
+    compile 'com.commit451:PhotoView:1.2.4'
 }

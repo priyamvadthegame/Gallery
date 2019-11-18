@@ -19,6 +19,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".SingleTouchImageView"></activity>
+        <activity android:name=".SingleTouchImageView1"></activity>
     </application>
 
 </manifest>
