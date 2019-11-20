@@ -35,11 +35,7 @@ public class SingleTouchImageView1 extends AppCompatActivity {
         MainActivity.resultIAV.toArray(imagelistArray);
         adapter=new ViewPagerAdapter(SingleTouchImageView1.this,imagelistArray,imagelistArray.length);
         viewPager.setAdapter(adapter);
-        if(ViewPagerAdapter.ondeletefalg==1)
-        viewPager.setCurrentItem(pos+1);
-        else
-            viewPager.setCurrentItem(pos);
-
+        viewPager.setCurrentItem(pos);
     }
     @Override
     public void onBackPressed() {

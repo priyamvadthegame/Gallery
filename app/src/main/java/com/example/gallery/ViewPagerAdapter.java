@@ -41,6 +41,7 @@ public class ViewPagerAdapter extends PagerAdapter implements android.view.View.
     View itemview;
     ImageButton shareimagebutton;
     ImageButton deleteimagebutton;
+    PhotoViewAttacher mAttacher;
     static int pos;
     static int ondeletefalg=0;
     static  String filesTobedeleted;
@@ -77,13 +78,16 @@ public class ViewPagerAdapter extends PagerAdapter implements android.view.View.
         Glide.with(mcontext).load(imageList[position]).into(imageView);
         container.addView(itemview);
         return itemview;
+
     }
 
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         ((ViewPager)container).removeView((View) object);
 
+
     }
+
 
 
     @Override
@@ -104,15 +108,18 @@ public class ViewPagerAdapter extends PagerAdapter implements android.view.View.
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which){
                             case DialogInterface.BUTTON_POSITIVE:
+                                try {
+                                    filesTobedeleted=imageList[pos-1];
+                                    File file = new File(filesTobedeleted);
+                                    file.delete();
+                                    Toast.makeText(mcontext,"Image deleted Succesfully",Toast.LENGTH_LONG).show();
+                                    ondeletefalg=1;
+                                }
+                                catch(UnsupportedOperationException e)
+                                {
+                                    e.printStackTrace();
+                                }
 
-                                filesTobedeleted=imageList[pos-1];
-                                File file = new File(filesTobedeleted);
-                                file.delete();
-                                Toast.makeText(mcontext,"Image deleted Succesfully",Toast.LENGTH_LONG).show();
-                                List<String> imagedummylist= Arrays.asList(imageList);
-                                imagedummylist.remove(pos-1);
-                                imageList=imagedummylist.toArray(new String[0]);
-                                ondeletefalg=1;
                                 break;
 
                             case DialogInterface.BUTTON_NEGATIVE:

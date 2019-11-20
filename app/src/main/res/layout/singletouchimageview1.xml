@@ -8,7 +8,7 @@
     <ImageView
         android:id="@+id/singletouchimageview1"
         android:layout_width="match_parent"
-        android:layout_height="700dp"
+        android:layout_height="1000dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
