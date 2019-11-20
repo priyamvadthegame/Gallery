@@ -3,6 +3,7 @@ package com.example.gallery;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.ActivityManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -12,6 +13,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +21,11 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
@@ -47,6 +51,8 @@ import rm.com.longpresspopup.PopupStateListener;
 public class MainActivity extends AppCompatActivity implements PopupInflaterListener,
         PopupStateListener, PopupOnHoverListener
 {   public static int SingleClickCount=0;
+    public static ArrayList<String> resultIAV = new ArrayList<String>();
+    public static int posSingleclick;
     ViewGroup viewGroup;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements PopupInflaterList
             String[] projection = {MediaStore.Images.ImageColumns.DATA};
             Cursor c = null;
             SortedSet<String> dirList = new TreeSet<String>();
-            final ArrayList<String> resultIAV = new ArrayList<String>();
+
             if (u != null)
             {
                 c = managedQuery(u, projection, null, null, null);
@@ -208,33 +214,22 @@ public class MainActivity extends AppCompatActivity implements PopupInflaterList
                     return false;
                 }
             });
-
-                gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                                     @Override
-
                                                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
                                                         SingleClickCount++;
-
+                                                        posSingleclick=i;
                                                             if (SingleClickCount <= 1) {
-                                                                if(i!=0) {
-                                                                    Intent intent = new Intent(MainActivity.this, SingleTouchImageView.class);
-                                                                    intent.putExtra("key", image_list1.get(i));
-                                                                    startActivity(intent);
-                                                                }
-                                                                else
-                                                                {
+
+
                                                                     Intent intent = new Intent(MainActivity.this, SingleTouchImageView1.class);
-                                                                    intent.putExtra("imagelist",resultIAV);
+                                                                    intent.putExtra("position", posSingleclick);
                                                                     startActivity(intent);
-                                                                }
+
                                                             }
                                                     }
 
                                                 });
-
-
-
             isGalleryInitialized=true;
         }
 
@@ -272,8 +267,30 @@ public class MainActivity extends AppCompatActivity implements PopupInflaterList
 
     }
 
+    @Override
+    public void onBackPressed() {
 
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which){
+                    case DialogInterface.BUTTON_POSITIVE:
+                       finishAffinity();
+                       System.exit(0);
+                        break;
 
-}
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        //No button clicked
+                        dialog.cancel();
+                        break;
+                }
+            }
+        };
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Are you sure to close the app").setCancelable(false).setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener).show();
+    }
+    }
+
 
 

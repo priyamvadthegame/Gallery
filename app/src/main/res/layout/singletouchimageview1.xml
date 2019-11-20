@@ -1,7 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:id="@+id/singletouchimageview1"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:background="#000000">
 
-</ImageView>
+    <ImageView
+        android:id="@+id/singletouchimageview1"
+        android:layout_width="match_parent"
+        android:layout_height="700dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="-4dp"
+        android:layout_marginLeft="-4dp"
+        android:layout_marginTop="-5dp"
+        android:adjustViewBounds="true"
+        android:paddingStart="0dp"
+        android:paddingEnd="0dp"
+        android:paddingBottom="15dp"
+        android:scaleType="fitCenter" />
+
+    <ImageButton
+        android:layout_width="25dp"
+        android:layout_height="31dp"
+        android:layout_alignLeft="@+id/singletouchimageview1"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/deleteimagebutton"
+        android:layout_marginLeft="37dp"
+        android:layout_marginRight="47dp"
+        android:layout_marginBottom="7dp"
+        android:src="@drawable/deleteimagebutton" />
+
+    <ImageButton
+        android:layout_width="31dp"
+        android:layout_height="31dp"
+        android:layout_alignRight="@+id/singletouchimageview1"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/shareimagebutton"
+        android:layout_marginLeft="41dp"
+        android:layout_marginRight="47dp"
+        android:layout_marginBottom="7dp"
+        android:src="@drawable/shareimagebotton" />
+</RelativeLayout>
