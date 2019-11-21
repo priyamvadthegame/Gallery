@@ -204,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements PopupInflaterList
                 @Override
                 public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                     pos=i;
-                    return false;
+                    return true;
                 }
             });
             gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -212,14 +212,13 @@ public class MainActivity extends AppCompatActivity implements PopupInflaterList
                                                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                                         SingleClickCount++;
                                                         posSingleclick=i;
+
                                                             if (SingleClickCount <= 1) {
-
-
                                                                     Intent intent = new Intent(MainActivity.this, ViewPager.class);
                                                                     intent.putExtra("position", posSingleclick);
                                                                     startActivity(intent);
-
                                                             }
+
                                                     }
 
                                                 });
@@ -252,6 +251,7 @@ public class MainActivity extends AppCompatActivity implements PopupInflaterList
                 .into(popupImg);
         Blurry.with(MainActivity.this).radius(25).sampling(2).onto(viewGroup);
 
+
     }
 
     @Override
@@ -280,7 +280,7 @@ public class MainActivity extends AppCompatActivity implements PopupInflaterList
             }
         };
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Are you sure to close the app").setCancelable(false).setPositiveButton("Yes", dialogClickListener)
+        builder.setMessage("Are you sure you want to exit?").setCancelable(false).setPositiveButton("Yes", dialogClickListener)
                 .setNegativeButton("No", dialogClickListener).show();
     }
     }

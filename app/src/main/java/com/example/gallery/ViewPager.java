@@ -6,20 +6,27 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class ViewPager extends AppCompatActivity {
-    public static androidx.viewpager.widget.ViewPager viewPager;
+    static androidx.viewpager.widget.ViewPager viewPager;
     ViewPagerAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.viewpageractivity);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         viewPager=findViewById(R.id.viewpager);
         String imagelistArray[]=new String[MainActivity.resultIAV.size()];
         int pos=getIntent().getExtras().getInt("position");
         MainActivity.resultIAV.toArray(imagelistArray);
         adapter=new ViewPagerAdapter(ViewPager.this,imagelistArray,imagelistArray.length);
         viewPager.setAdapter(adapter);
-        viewPager.setCurrentItem(pos);
+        viewPager.setCurrentItem(pos,true);
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();

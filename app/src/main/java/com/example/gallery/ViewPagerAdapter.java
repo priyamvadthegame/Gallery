@@ -46,6 +46,7 @@ public class ViewPagerAdapter extends PagerAdapter implements android.view.View.
     static int pos;
     static int ondeletefalg=0;
     static  String filesTobedeleted;
+    static  String fileNextToTheDeleted;
 
     ViewPagerAdapter(Context mcontext,String[] imageList,int noOfImages)
     {
@@ -57,6 +58,11 @@ public class ViewPagerAdapter extends PagerAdapter implements android.view.View.
     @Override
     public int getCount() {
         return noOfImages;
+    }
+
+    @Override
+    public int getItemPosition(@NonNull Object object) {
+        return POSITION_NONE;
     }
 
     @Override
@@ -108,11 +114,16 @@ public class ViewPagerAdapter extends PagerAdapter implements android.view.View.
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which){
                             case DialogInterface.BUTTON_POSITIVE:
+
                                 try {
+
                                     filesTobedeleted=imageList[pos-1];
+                                    fileNextToTheDeleted=imageList[pos];
                                     File file = new File(filesTobedeleted);
                                     file.delete();
                                     Toast.makeText(mcontext,"Image deleted Succesfully",Toast.LENGTH_LONG).show();
+                                    deleteElement(imageList,imageList.length,filesTobedeleted);
+                                    notifyDataSetChanged();
                                     ondeletefalg=1;
                                 }
                                 catch(UnsupportedOperationException e)
@@ -135,6 +146,35 @@ public class ViewPagerAdapter extends PagerAdapter implements android.view.View.
                 break;
             }
         }
+    static int findElement(String arr[], int n, String key)
+    {
+        int i;
+        for (i = 0; i < n; i++)
+            if (arr[i].equals(key))
+                return i;
+
+        return -1;
+    }
+
+    // Function to delete an element
+    static int deleteElement(String arr[], int n, String key)
+    {
+        // Find position of element to be
+        // deleted
+        int pos = findElement(arr, n, key);
+
+        if (pos == -1)
+        {
+            return n;
+        }
+
+        // Deleting element
+        int i;
+        for (i = pos; i< n - 1; i++)
+            arr[i] = arr[i + 1];
+
+        return n - 1;
+    }
 
 }
 
