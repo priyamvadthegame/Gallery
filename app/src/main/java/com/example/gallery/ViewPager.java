@@ -1,29 +1,12 @@
 package com.example.gallery;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.provider.ContactsContract;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
 
-
-
-import java.io.File;
-import java.util.List;
-
-import uk.co.senab.photoview.PhotoViewAttacher;
-
-public class SingleTouchImageView1 extends AppCompatActivity {
-    public static ViewPager viewPager;
+public class ViewPager extends AppCompatActivity {
+    public static androidx.viewpager.widget.ViewPager viewPager;
     ViewPagerAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +16,7 @@ public class SingleTouchImageView1 extends AppCompatActivity {
         String imagelistArray[]=new String[MainActivity.resultIAV.size()];
         int pos=getIntent().getExtras().getInt("position");
         MainActivity.resultIAV.toArray(imagelistArray);
-        adapter=new ViewPagerAdapter(SingleTouchImageView1.this,imagelistArray,imagelistArray.length);
+        adapter=new ViewPagerAdapter(ViewPager.this,imagelistArray,imagelistArray.length);
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(pos);
     }
@@ -43,8 +26,8 @@ public class SingleTouchImageView1 extends AppCompatActivity {
         MainActivity.SingleClickCount=0;
         if(ViewPagerAdapter.ondeletefalg==1) {
             MainActivity.resultIAV.remove(ViewPagerAdapter.filesTobedeleted);
-            Intent myIntent = new Intent(SingleTouchImageView1.this, MainActivity.class);
-            SingleTouchImageView1.this.startActivity(myIntent);
+            Intent myIntent = new Intent(ViewPager.this, MainActivity.class);
+            ViewPager.this.startActivity(myIntent);
             ViewPagerAdapter.ondeletefalg=0;
         }
     }

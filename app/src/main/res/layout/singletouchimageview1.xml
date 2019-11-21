@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:background="#000000">
 
-    <ImageView
+    <uk.co.senab.photoview.PhotoView
         android:id="@+id/singletouchimageview1"
         android:layout_width="match_parent"
         android:layout_height="1000dp"

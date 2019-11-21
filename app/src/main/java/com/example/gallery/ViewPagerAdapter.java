@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -30,6 +31,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.IntStream;
 
+import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class ViewPagerAdapter extends PagerAdapter implements android.view.View.OnClickListener{
@@ -37,11 +39,10 @@ public class ViewPagerAdapter extends PagerAdapter implements android.view.View.
     static String  imageList[]=new String[noOfImages];
     static Context mcontext;
     LayoutInflater inflater;
-    ImageView imageView;
     View itemview;
+    PhotoView imageView;
     ImageButton shareimagebutton;
     ImageButton deleteimagebutton;
-    PhotoViewAttacher mAttacher;
     static int pos;
     static int ondeletefalg=0;
     static  String filesTobedeleted;
@@ -89,7 +90,6 @@ public class ViewPagerAdapter extends PagerAdapter implements android.view.View.
     }
 
 
-
     @Override
     public void onClick(View view) {
         switch (view.getId())
@@ -130,11 +130,13 @@ public class ViewPagerAdapter extends PagerAdapter implements android.view.View.
                     }
                 };
                 AlertDialog.Builder builder = new AlertDialog.Builder(mcontext);
-                builder.setMessage("Are you sure to delete this file?").setPositiveButton("Yes", dialogClickListener)
+                builder.setMessage("Are you sure,you want to exit?").setPositiveButton("Yes", dialogClickListener)
                         .setNegativeButton("No", dialogClickListener).show();
                 break;
             }
         }
 
-    }
+}
+
+
 
