@@ -24,7 +24,8 @@ public class ViewPager extends AppCompatActivity {
         MainActivity.resultIAV.toArray(imagelistArray);
         adapter=new ViewPagerAdapter(ViewPager.this,imagelistArray,imagelistArray.length);
         viewPager.setAdapter(adapter);
-        viewPager.setCurrentItem(pos,true);
+        viewPager.setCurrentItem(pos);
+
     }
 
     @Override

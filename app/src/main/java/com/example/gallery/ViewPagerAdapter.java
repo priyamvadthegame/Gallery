@@ -101,6 +101,7 @@ public class ViewPagerAdapter extends PagerAdapter implements android.view.View.
         switch (view.getId())
         {
             case R.id.shareimagebutton:
+                com.example.gallery.ViewPager.viewPager.setCurrentItem(com.example.gallery.ViewPager.viewPager.getCurrentItem(),true);
                 Intent shareintent=new Intent(Intent.ACTION_SEND);
                 shareintent.putExtra(Intent.EXTRA_STREAM, Uri.parse(imageList[pos-1]));
                 shareintent.setType("image/jpeg");
@@ -141,7 +142,7 @@ public class ViewPagerAdapter extends PagerAdapter implements android.view.View.
                     }
                 };
                 AlertDialog.Builder builder = new AlertDialog.Builder(mcontext);
-                builder.setMessage("Are you sure,you want to exit?").setPositiveButton("Yes", dialogClickListener)
+                builder.setMessage("Are you sure,you want to delete this image?").setPositiveButton("Yes", dialogClickListener)
                         .setNegativeButton("No", dialogClickListener).show();
                 break;
             }
