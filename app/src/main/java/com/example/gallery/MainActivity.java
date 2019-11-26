@@ -152,10 +152,6 @@ public class MainActivity extends AppCompatActivity implements PopupInflaterList
                         if(imagePath.isDirectory())
                         {
                             imageList = imagePath.listFiles();
-
-
-
-
                         }
                         if ( imagePath.getName().contains(".jpg")|| imagePath.getName().contains(".JPG")
                                 || imagePath.getName().contains(".jpeg")|| imagePath.getName().contains(".JPEG")

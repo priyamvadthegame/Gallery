@@ -18,10 +18,6 @@ import java.util.List;
 public final class GalleryAdapter extends BaseAdapter{
     private List<String> data=new ArrayList<String>();
     private Context mcntext;
-    GalleryAdapter()
-    {
-
-    }
     GalleryAdapter(Context context)
     {
         this.mcntext=context;
