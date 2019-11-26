@@ -12,12 +12,6 @@ public class ViewPager extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.viewpageractivity);
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         viewPager=findViewById(R.id.viewpager);
         String imagelistArray[]=new String[MainActivity.resultIAV.size()];
         int pos=getIntent().getExtras().getInt("position");
@@ -27,7 +21,6 @@ public class ViewPager extends AppCompatActivity {
         viewPager.setCurrentItem(pos);
 
     }
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
